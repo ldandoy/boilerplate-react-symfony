@@ -1,0 +1,61 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    container_name: test_sf_app
+    volumes:
+      - ./app:/app
+    ports:
+      - "8001:8080"
+    env_file:
+      - .env.docker
+    environment:
+      APP_ENV: dev
+      SERVER_NAME: :8080
+      CADDY_MERCURE: "off"
+      XDEBUG_MODE: debug
+    depends_on:
+      - db
+    networks:
+      - test_sf
+
+  db:
+    image: mysql:8.0
+    container_name: test_sf_db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - test_sf
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: test_sf_phpmyadmin
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    environment:
+      - PMA_HOST=test_sf_db
+      - UPLOAD_LIMIT=64M
+    networks:
+      - test_sf
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: test_sf_mailpit
+    ports:
+      - "8025:8025"  # UI Mailpit
+      - "1025:1025"  # SMTP
+    networks:
+      - test_sf
+
+networks:
+  test_sf:
