@@ -15,7 +15,7 @@ services:
       APP_ENV: dev
       SERVER_NAME: :8080
       CADDY_MERCURE: "off"
-      XDEBUG_MODE: debug
+      XDEBUG_MODE: "${XDEBUG_MODE:-off}"  # active avec XDEBUG_MODE=debug
     depends_on:
       - db
     networks:

@@ -9,3 +9,7 @@
 
 controllers:
     resource: routing.controllers
+
+auth:
+    path: /api/login_check
+    methods: ["POST"]
