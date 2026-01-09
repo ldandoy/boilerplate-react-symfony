@@ -31,6 +31,14 @@ security:
             stateless: true
             refresh_jwt:
                 check_path: /api/token/refresh
+        register:
+            pattern: ^/api/register
+            stateless: true
+            security: false
+        verify_email:
+            pattern: ^/api/verify/email
+            stateless: true
+            security: false
         api:
             pattern: ^/api/
             stateless: true
