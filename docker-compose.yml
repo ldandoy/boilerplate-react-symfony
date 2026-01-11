@@ -1,21 +1,34 @@
 services:
-  app:
+  front:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
       target: dev
+    container_name: test_sf_front
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    networks:
+      - test_sf
+
+  back:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+      target: dev
+      args:
+        INSTALL_XDEBUG: "true"
     container_name: test_sf_app
     volumes:
-      - ./app:/app
+      - ./backend:/app
     ports:
       - "8001:8080"
-    env_file:
-      - .env.docker
     environment:
       APP_ENV: dev
       SERVER_NAME: :8080
       CADDY_MERCURE: "off"
-      XDEBUG_MODE: "${XDEBUG_MODE:-off}"  # active avec XDEBUG_MODE=debug
+      XDEBUG_MODE: "debug" # active avec XDEBUG_MODE=debug
     depends_on:
       - db
     networks:
@@ -52,8 +65,8 @@ services:
     image: axllent/mailpit:latest
     container_name: test_sf_mailpit
     ports:
-      - "8025:8025"  # UI Mailpit
-      - "1025:1025"  # SMTP
+      - "8025:8025" # UI Mailpit
+      - "1025:1025" # SMTP
     networks:
       - test_sf
 

@@ -1,0 +1,23 @@
+parameters:
+    app.frontend_url: '%env(FRONTEND_URL)%'
+
+services:
+    _defaults:
+        autowire: true # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\:
+        resource: "../src/"
+
+    App\OpenApi\JwtDecorator:
+        decorates: "api_platform.openapi.factory"
+        arguments: ["@.inner"]
+        decoration_priority: -10
+
+    App\Security\EmailVerifier:
+        arguments:
+            $frontendUrl: '%app.frontend_url%'
+
+    App\State\ForgotPasswordProcessor:
+        arguments:
+            $frontendUrl: '%app.frontend_url%'
