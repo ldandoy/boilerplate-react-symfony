@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerifyEmail from "./pages/VerifyEmail";
 import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 import Me from "./pages/Me";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
@@ -28,6 +29,7 @@ const App = () => {
                 <Route path="about" element={<About />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
                 <Route path="verify-email" element={<VerifyEmail />} />
                 <Route path="reset-password" element={<ResetPassword />} />
                 <Route path="me" element={<Me />} />

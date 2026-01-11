@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSearchParams, useNavigate } from 'react-router';
+import { useSearchParams, useNavigate, Link } from 'react-router';
 import axios from 'axios';
 import { useToast } from '../hooks/useToast';
 import { resetPasswordSchema, type ResetPasswordFormData, type ResetPasswordApiData } from '../schemas/resetPasswordSchema';
@@ -66,10 +66,13 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="w-1/4 mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6 text-center">Réinitialiser le mot de passe</h1>
+    <div className="container mx-auto w-1/4 mt-10">
+      <div>
+        <h2 className="text-4xl font-bold text-center">Mise à jour</h2>
+        <div className="text-center text-gray-500">Choisissez un nouveau mot de passe sécurisé</div>
+      </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4 border border-gray-300 p-4 rounded bg-gray-50">
         {serverError && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             {serverError}
@@ -85,15 +88,13 @@ const ResetPassword = () => {
 
         <input type="hidden" {...register('token')} />
 
-        <div>
-          <label htmlFor="password" className="block mb-2 font-semibold">
-            Nouveau mot de passe
-          </label>
+        <div className="mb-4 flex flex-col">
+          <label htmlFor="password">Nouveau mot de passe:</label>
           <input
             id="password"
             type="password"
             {...register('password')}
-            className="border border-gray-300 rounded p-2 w-full dark:bg-gray-700 dark:border-gray-600"
+            className="border border-gray-300 rounded p-2 dark:bg-gray-700 dark:border-gray-600"
             placeholder="••••••••"
           />
           {errors.password && (
@@ -101,15 +102,13 @@ const ResetPassword = () => {
           )}
         </div>
 
-        <div>
-          <label htmlFor="password_cfg" className="block mb-2 font-semibold">
-            Confirmer le mot de passe
-          </label>
+        <div className="mb-4 flex flex-col">
+          <label htmlFor="password_cfg">Confirmer le mot de passe:</label>
           <input
             id="password_cfg"
             type="password"
             {...register('password_cfg')}
-            className="border border-gray-300 rounded p-2 w-full dark:bg-gray-700 dark:border-gray-600"
+            className="border border-gray-300 rounded p-2 dark:bg-gray-700 dark:border-gray-600"
             placeholder="••••••••"
           />
           {errors.password_cfg && (
@@ -126,16 +125,17 @@ const ResetPassword = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="bg-blue-500 hover:bg-blue-700 text-white w-full py-2 px-4 rounded disabled:bg-blue-300 disabled:cursor-not-allowed"
+          className="bg-blue-800 hover:cursor-pointer hover:bg-blue-900 text-white w-full py-2 px-4 rounded disabled:bg-blue-300 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Réinitialisation...' : 'Réinitialiser le mot de passe'}
         </button>
 
         <div className="text-center mt-4">
+          <hr className="my-4 text-gray-200" />
           <p className="text-sm">
-            <a href="/login" className="text-blue-500 hover:text-blue-700 font-semibold">
+            <Link to="/login" className="text-blue-800 hover:text-blue-900 font-semibold">
               Retour à la connexion
-            </a>
+            </Link>
           </p>
         </div>
       </form>

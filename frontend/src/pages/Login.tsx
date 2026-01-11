@@ -42,13 +42,12 @@ const Login = () => {
   return (
     <div className="container mx-auto w-1/4 mt-10">
       <div>
-        <div>Les Compagnons du Dev</div>
-        <h2>Connexion</h2>
-        <div>Accédez à votre espace développeur</div>
+        <h2 className="text-4xl font-bold text-center">Connexion</h2>
+        <div className="text-center text-gray-500">Accédez à votre espace</div>
       </div>
 
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className="mt-6 space-y-4 border border-gray-300 p-4 rounded bg-gray-50" onSubmit={handleSubmit(onSubmit)}>
         {serverError && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {serverError}
@@ -70,10 +69,10 @@ const Login = () => {
         </div>
 
         <div className="mb-4 flex flex-col">
-          <div>
+          <div className="flex justify-between">
             <label htmlFor="password">Mot de passe:</label>
             <div>
-              <Link to="">Mot de passe oublié ?</Link>
+              <Link className="text-blue-800 hover:text-blue-900 font-semibold" to="/forgot-password">Mot de passe oublié ?</Link>
             </div>
           </div>
           <input
@@ -89,7 +88,7 @@ const Login = () => {
         </div>
 
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white w-full py-2 px-4 rounded disabled:bg-blue-300 disabled:cursor-not-allowed"
+          className="bg-blue-800 hover:cursor-pointer hover:bg-blue-900 text-white w-full py-2 px-4 rounded disabled:bg-blue-300 disabled:cursor-not-allowed"
           type="submit"
           disabled={isSubmitting}
         >
@@ -97,14 +96,15 @@ const Login = () => {
         </button>
 
         <div className="text-center mt-4">
+          <hr className="my-4 text-gray-200" />
           <p className="text-sm">
-            Nouveau compagnon ?{" "}
-            <a
-              href="/register"
-              className="text-blue-500 hover:text-blue-700 font-semibold"
+            Pas encore de compte ?{" "}
+            <Link
+              to="/register"
+              className="text-blue-800 hover:text-blue-900 font-semibold"
             >
               Créer un compte
-            </a>
+            </Link>
           </p>
         </div>
       </form>

@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterFormData } from '../schemas/signupSchema';
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -52,10 +52,13 @@ const Register = () => {
   };
 
   return (
-    <div className="w-1/4 mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6 text-center">Inscription</h1>
+    <div className="container mx-auto w-1/4 mt-10">
+      <div>
+        <h2 className="text-4xl font-bold text-center">Inscription</h2>
+        <div className="text-center text-gray-500">Rejoignez l'aventure</div>
+      </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4 border border-gray-300 p-4 rounded bg-gray-50">
         {serverError && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             {serverError}
@@ -68,48 +71,42 @@ const Register = () => {
           </div>
         )}
 
-        <div>
-          <label htmlFor="email" className="block mb-2 font-semibold">
-            Email
-          </label>
+        <div className="mb-4 flex flex-col">
+          <label htmlFor="email">Email:</label>
           <input
             id="email"
             type="email"
             {...register('email')}
-            className="border border-gray-300 rounded p-2 w-full dark:bg-gray-700 dark:border-gray-600"
-            placeholder="votre@email.com"
+            className="border border-gray-300 rounded p-2 dark:bg-gray-700 dark:border-gray-600"
+            placeholder="Email"
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
 
-        <div>
-          <label htmlFor="password" className="block mb-2 font-semibold">
-            Mot de passe
-          </label>
+        <div className="mb-4 flex flex-col">
+          <label htmlFor="password">Mot de passe:</label>
           <input
             id="password"
             type="password"
             {...register('password')}
-            className="border border-gray-300 rounded p-2 w-full dark:bg-gray-700 dark:border-gray-600"
-            placeholder="••••••"
+            className="border border-gray-300 rounded p-2 dark:bg-gray-700 dark:border-gray-600"
+            placeholder="Mot de passe"
           />
           {errors.password && (
             <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
           )}
         </div>
 
-        <div>
-          <label htmlFor="confirmPassword" className="block mb-2 font-semibold">
-            Confirmer le mot de passe
-          </label>
+        <div className="mb-4 flex flex-col">
+          <label htmlFor="confirmPassword">Confirmer le mot de passe:</label>
           <input
             id="confirmPassword"
             type="password"
             {...register('confirmPassword')}
-            className="border border-gray-300 rounded p-2 w-full dark:bg-gray-700 dark:border-gray-600"
-            placeholder="••••••"
+            className="border border-gray-300 rounded p-2 dark:bg-gray-700 dark:border-gray-600"
+            placeholder="Confirmer le mot de passe"
           />
           {errors.confirmPassword && (
             <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
@@ -117,19 +114,23 @@ const Register = () => {
         </div>
 
         <button
+          className="bg-blue-800 hover:cursor-pointer hover:bg-blue-900 text-white w-full py-2 px-4 rounded disabled:bg-blue-300 disabled:cursor-not-allowed"
           type="submit"
           disabled={isSubmitting}
-          className="bg-blue-500 hover:bg-blue-700 text-white w-full py-2 px-4 rounded disabled:bg-blue-300 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'Inscription en cours...' : "S'inscrire"}
+          {isSubmitting ? 'Inscription...' : "S'inscrire"}
         </button>
 
         <div className="text-center mt-4">
+          <hr className="my-4 text-gray-200" />
           <p className="text-sm">
-            Déjà compagnon ?{' '}
-            <a href="/login" className="text-blue-500 hover:text-blue-700 font-semibold">
+            Déjà un compte ?{' '}
+            <Link
+              to="/login"
+              className="text-blue-800 hover:text-blue-900 font-semibold"
+            >
               Se connecter
-            </a>
+            </Link>
           </p>
         </div>
       </form>
