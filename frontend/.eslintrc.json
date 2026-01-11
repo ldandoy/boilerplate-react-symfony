@@ -1,0 +1,41 @@
+{
+  "env": {
+    "browser": true,  // Active les globales du navigateur (window, document, etc.)
+    "es2021": true,   // Active les fonctionnalités ES2021
+    "node": true      // Active les globales Node.js (si nécessaire)
+  },
+  "extends": [
+    "eslint:recommended",                    // Règles de base d'ESLint
+    "plugin:react/recommended",              // Règles pour React
+    "plugin:@typescript-eslint/recommended", // Règles pour TypeScript
+    "plugin:react/jsx-runtime",              // Pour éviter l'erreur 'React' must be in scope
+    "plugin:prettier/recommended"            // Désactive les règles ESLint en conflit avec Prettier
+  ],
+  "parser": "@typescript-eslint/parser",     // Utilise le parser TypeScript
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true  // Active la prise en charge de JSX
+    },
+    "ecmaVersion": "latest",  // Dernière version d'ECMAScript
+    "sourceType": "module"   // Utilise les modules ES
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "rules": {
+    // Règles personnalisées
+    "react/react-in-jsx-scope": "off",              // Pas besoin d'importer React explicitement avec les nouvelles versions
+    "no-console": "warn",                           // Avertit si on utilise console.log
+    "@typescript-eslint/no-explicit-any": "error",  // Interdit l'utilisation de 'any'
+    "quotes": ["error", "single"],                  // Guillemets simples obligatoires
+    "semi": ["error", "always"],                    // Point-virgule obligatoire
+    "prettier/prettier": "error"                    // Active Prettier comme règle ESLint
+  },
+  "settings": {
+    "react": {
+      "version": "detect"  // Détecte automatiquement la version de React
+    }
+  }
+}
