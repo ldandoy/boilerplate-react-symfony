@@ -21,3 +21,9 @@ services:
     App\State\ForgotPasswordProcessor:
         arguments:
             $frontendUrl: '%app.frontend_url%'
+
+    # Desactive le listener par defaut du bundle gesdinet (bugue dans v2.0.0-beta)
+    # On utilise notre propre AuthenticationSuccessListener a la place
+    gesdinet_jwt_refresh_token.event_listener.attach_refresh_token:
+        class: Gesdinet\JWTRefreshTokenBundle\EventListener\AttachRefreshTokenOnSuccessListener
+        tags: []

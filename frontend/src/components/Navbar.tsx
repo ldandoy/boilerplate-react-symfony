@@ -33,9 +33,6 @@ export const Navbar = () => {
         <li className="mx-4">
           <NavLink to="/">Home</NavLink>
         </li>
-        <li className="mx-4">
-          <NavLink to="/about">About</NavLink>
-        </li>
       </ul>
       <ul className="flex items-center">
         <li>

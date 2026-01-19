@@ -5,7 +5,6 @@ import { AuthProvider } from "./context/AuthContext";
 
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
-import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -26,7 +25,6 @@ const App = () => {
             <div className="container mx-auto px-4 py-8">
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="about" element={<About />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
