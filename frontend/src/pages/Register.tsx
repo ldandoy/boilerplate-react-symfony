@@ -58,7 +58,7 @@ const Register = () => {
         <div className="text-center text-gray-500">Rejoignez l'aventure</div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4 border border-gray-300 p-4 rounded bg-gray-50">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4 border border-gray-300 dark:border-gray-600 p-4 rounded bg-gray-50 dark:bg-gray-700">
         {serverError && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
             {serverError}
