@@ -14,7 +14,7 @@ FROM base AS dev
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 EXPOSE 5173
-CMD ["pnpm", "dev", "--host"]
+CMD ["sh", "-c", "pnpm install && pnpm dev --host"]
 
 FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
