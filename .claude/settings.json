@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /home/ldandoy/projets/boilerplate-react-symfony restore --staged frontend/.pnpm-store/)",
+      "Bash(git -C /home/ldandoy/projets/boilerplate-react-symfony status --short)"
+    ]
+  }
+}

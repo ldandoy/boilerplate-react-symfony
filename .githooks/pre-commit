@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+#
+# Lint + format des fichiers stagés du frontend, exécuté dans le conteneur
+# test_sf_front (aucune dépendance Node requise sur l'hôte).
+
+CONTAINER=test_sf_front
+
+# Fichiers stagés sous frontend/, hors dossiers générés, chemins relatifs à /app
+STAGED_REL=$(
+    git diff --cached --name-only --diff-filter=ACMR -z \
+        | tr '\0' '\n' \
+        | grep '^frontend/' \
+        | grep -Ev '^frontend/(node_modules|\.pnpm-store|dist|dist-ssr)/' \
+        | sed 's|^frontend/||'
+)
+
+if [ -z "$STAGED_REL" ]; then
+    exit 0
+fi
+
+if ! docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
+    echo "pre-commit: conteneur '${CONTAINER}' non démarré." >&2
+    echo "pre-commit: lance 'docker compose up -d' puis recommite." >&2
+    exit 1
+fi
+
+JS_FILES=$(echo "$STAGED_REL" | grep -E '\.(ts|tsx|js|jsx)$' || true)
+
+if [ -n "$JS_FILES" ]; then
+    if ! printf '%s\n' "$JS_FILES" \
+        | xargs docker exec -i "$CONTAINER" pnpm exec eslint --fix --; then
+        echo "pre-commit: eslint a échoué." >&2
+        exit 1
+    fi
+fi
+
+if ! printf '%s\n' "$STAGED_REL" \
+    | xargs docker exec -i "$CONTAINER" pnpm exec prettier --write --ignore-unknown --; then
+    echo "pre-commit: prettier a échoué." >&2
+    exit 1
+fi
+
+printf '%s\n' "$STAGED_REL" | sed 's|^|frontend/|' | xargs git add
+
+exit 0
