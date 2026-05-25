@@ -12,7 +12,11 @@
       "Bash(git -C /home/ldandoy/projets/boilerplate-react-symfony show 'stash@{0}:backend/tests/Unit/ExampleTest.php')",
       "Bash(git -C /home/ldandoy/projets/boilerplate-react-symfony stash list --date=iso)",
       "Bash(git -C /home/ldandoy/projets/boilerplate-react-symfony log -g --oneline --date=iso)",
-      "Bash(git -C /home/ldandoy/projets/boilerplate-react-symfony stash show --include-untracked 'stash@{0}' --name-only)"
+      "Bash(git -C /home/ldandoy/projets/boilerplate-react-symfony stash show --include-untracked 'stash@{0}' --name-only)",
+      "Bash(docker compose *)",
+      "mcp__claude_ai_Context7__query-docs",
+      "Bash(curl -sI http://localhost:5173)",
+      "Bash(curl -sI http://localhost:8001)"
     ]
   }
 }

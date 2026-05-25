@@ -4,13 +4,14 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       target: dev
-    container_name: test_sf_front
+    container_name: boilterplate_front
     volumes:
       - ./frontend:/app
     ports:
       - "5173:5173"
+    restart: unless-stopped
     networks:
-      - test_sf
+      - boilterplate
 
   back:
     build:
@@ -19,7 +20,8 @@ services:
       target: dev
       args:
         INSTALL_XDEBUG: "true"
-    container_name: test_sf_app
+    container_name: boilterplate_back
+    restart: unless-stopped
     volumes:
       - ./backend:/app
     ports:
@@ -32,12 +34,13 @@ services:
     depends_on:
       - db
     networks:
-      - test_sf
+      - boilterplate
 
   db:
     image: mysql:8.0
-    container_name: test_sf_db
+    container_name: boilterplate_db
     command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: app
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
@@ -46,29 +49,31 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
     networks:
-      - test_sf
+      - boilterplate
 
   phpmyadmin:
     image: phpmyadmin
-    container_name: test_sf_phpmyadmin
+    container_name: boilterplate_phpmyadmin
+    restart: unless-stopped
     ports:
       - 8080:80
     depends_on:
       - db
     environment:
-      - PMA_HOST=test_sf_db
+      - PMA_HOST=boilterplate_db
       - UPLOAD_LIMIT=64M
     networks:
-      - test_sf
+      - boilterplate
 
   mailpit:
     image: axllent/mailpit:latest
-    container_name: test_sf_mailpit
+    container_name: boilterplate_mailpit
+    restart: unless-stopped
     ports:
       - "8025:8025" # UI Mailpit
       - "1025:1025" # SMTP
     networks:
-      - test_sf
+      - boilterplate
 
 networks:
-  test_sf:
+  boilterplate:
