@@ -6,37 +6,22 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\RegisterInput;
 use App\ApiResource\RegisterOutput;
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Service\UserRegistrationService;
 
 class UserProcessor implements ProcessorInterface
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserRegistrationService $registrationService
     ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): RegisterOutput
     {
-        if ($data instanceof RegisterInput) {
-            return $this->processRegistration($data);
+        if (!$data instanceof RegisterInput) {
+            throw new \InvalidArgumentException('Unsupported data type');
         }
 
-        throw new \InvalidArgumentException('Unsupported data type');
-    }
-
-    private function processRegistration(RegisterInput $input): RegisterOutput
-    {
-        $user = new User();
-        $user->setEmail($input->email);
-
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $input->password);
-        $user->setPassword($hashedPassword);
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $user = $this->registrationService->registerUser($data->email, $data->password, 'api_verify_email');
 
         return new RegisterOutput(
             id: $user->getId(),
@@ -44,4 +29,3 @@ class UserProcessor implements ProcessorInterface
         );
     }
 }
-

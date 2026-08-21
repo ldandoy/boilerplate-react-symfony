@@ -27,7 +27,7 @@ class ResetPassword
     public ?string $token = null;
 
     #[Assert\NotBlank]
-    #[Assert\Length(min: 6)]
+    #[Assert\Length(min: 8, max: 4096)]
     public ?string $password = null;
 
     public ?string $message = null;

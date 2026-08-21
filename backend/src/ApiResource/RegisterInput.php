@@ -29,8 +29,10 @@ class RegisterInput
 
     #[Assert\NotBlank(message: 'Password is required')]
     #[Assert\Length(
-        min: 6,
-        minMessage: 'Password must be at least {{ limit }} characters long'
+        min: 8,
+        max: 4096,
+        minMessage: 'Password must be at least {{ limit }} characters long',
+        maxMessage: 'Password cannot be longer than {{ limit }} characters'
     )]
     public ?string $password = null;
 }

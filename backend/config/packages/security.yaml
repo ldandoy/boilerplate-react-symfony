@@ -19,6 +19,8 @@ security:
         login:
             pattern: ^/api/login
             stateless: true
+            login_throttling:
+                max_attempts: 5
             json_login:
                 check_path: /api/login_check
                 provider: app_user_provider
@@ -36,7 +38,7 @@ security:
             stateless: true
             security: false
         verify_email:
-            pattern: ^/api/verify/email
+            pattern: ^/api/verify-email
             stateless: true
             security: false
         api:
