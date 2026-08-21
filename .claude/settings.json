@@ -16,7 +16,8 @@
       "Bash(docker compose *)",
       "mcp__claude_ai_Context7__query-docs",
       "Bash(curl -sI http://localhost:5173)",
-      "Bash(curl -sI http://localhost:8001)"
+      "Bash(curl -sI http://localhost:8001)",
+      "Bash(php bin/console debug:router)"
     ]
   }
 }
