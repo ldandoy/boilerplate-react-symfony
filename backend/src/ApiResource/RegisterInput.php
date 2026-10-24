@@ -4,7 +4,9 @@ namespace App\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
+use App\Entity\User;
 use App\State\UserProcessor;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -21,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         )
     ]
 )]
+#[UniqueEntity(fields: ['email'], entityClass: User::class, message: 'There is already an account with this email')]
 class RegisterInput
 {
     #[Assert\NotBlank(message: 'Email is required')]

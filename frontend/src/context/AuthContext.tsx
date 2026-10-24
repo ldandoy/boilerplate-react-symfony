@@ -1,11 +1,9 @@
-import { createContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import api, { setAccessToken } from "../lib/axios";
 import { getUserFromToken } from "../lib/jwt";
-import type { AuthContextType } from "../types/AuthContext";
+import { AuthContext } from "./auth";
 import type { User } from "../types/User";
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -74,4 +72,4 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export { AuthContext, AuthProvider };
+export { AuthProvider };

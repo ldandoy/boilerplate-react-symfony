@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useToast } from "../hooks/useToast";
 import { forgotPasswordSchema, type ForgotPasswordFormData } from "../schemas/forgotPasswordSchema";
+import { getApiErrorMessage } from "../lib/apiError";
 
 const ForgotPassword = () => {
   const toast = useToast();
@@ -29,14 +30,13 @@ const ForgotPassword = () => {
       });
       setSuccessMessage("Si cet email correspond à un compte, vous recevrez un lien de réinitialisation.");
       toast.success("Demande envoyée !");
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        "Une erreur est survenue lors de la demande";
+    } catch (error) {
+      const errorMessage = getApiErrorMessage(
+        error,
+        "Une erreur est survenue lors de la demande"
+      );
       setServerError(errorMessage);
       toast.error(errorMessage);
-      console.error("Erreur lors de la demande de réinitialisation:", error);
     }
   };
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router";
 import axios from "axios";
 import { useToast } from "../hooks/useToast";
+import { getApiErrorMessage } from "../lib/apiError";
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
@@ -45,15 +46,14 @@ const VerifyEmail = () => {
         setTimeout(() => {
           navigate("/login");
         }, 3000);
-      } catch (error: any) {
+      } catch (error) {
         setStatus("error");
-        const errorMessage =
-          error.response?.data?.error ||
-          error.response?.data?.message ||
-          "Une erreur est survenue lors de la vérification de l'email";
+        const errorMessage = getApiErrorMessage(
+          error,
+          "Une erreur est survenue lors de la vérification de l'email"
+        );
         setMessage(errorMessage);
         toast.error(errorMessage);
-        console.error("Erreur lors de la vérification:", error);
       }
     };
 

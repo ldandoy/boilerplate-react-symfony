@@ -5,6 +5,7 @@ import { useSearchParams, useNavigate, Link } from 'react-router';
 import axios from 'axios';
 import { useToast } from '../hooks/useToast';
 import { resetPasswordSchema, type ResetPasswordFormData, type ResetPasswordApiData } from '../schemas/resetPasswordSchema';
+import { getApiErrorMessage } from '../lib/apiError';
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -54,14 +55,13 @@ const ResetPassword = () => {
       setTimeout(() => {
         navigate('/login');
       }, 3000);
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        'Une erreur est survenue lors de la réinitialisation du mot de passe';
+    } catch (error) {
+      const errorMessage = getApiErrorMessage(
+        error,
+        'Une erreur est survenue lors de la réinitialisation du mot de passe'
+      );
       setServerError(errorMessage);
       toast.error(errorMessage);
-      console.error('Erreur lors de la réinitialisation:', error);
     }
   };
 

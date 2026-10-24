@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../hooks/useAuth";
 import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
+import { getApiErrorMessage } from "../lib/apiError";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,14 +29,13 @@ const Login = () => {
       await login(data.email, data.password);
       toast.success("Connexion réussie !");
       navigate("/");
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        "Une erreur est survenue lors de la connexion";
+    } catch (error) {
+      const errorMessage = getApiErrorMessage(
+        error,
+        "Une erreur est survenue lors de la connexion"
+      );
       setServerError(errorMessage);
       toast.error(errorMessage);
-      console.error("Erreur lors de la connexion:", error);
     }
   };
 

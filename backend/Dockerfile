@@ -1,5 +1,5 @@
 # ========= Base commune =========
-FROM dunglas/frankenphp:1-php8.4-alpine AS base
+FROM dunglas/frankenphp:1-php8.4.27-alpine AS base
 WORKDIR /app
 
 # Paquets système (intl, zip, gd, etc. si besoin)

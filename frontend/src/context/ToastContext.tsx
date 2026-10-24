@@ -1,9 +1,6 @@
-import { createContext } from "react";
 import { toast, ToastContainer, type ToastOptions } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import type { ToastContextType } from "../types/ToastContext";
-
-const ToastContext = createContext<ToastContextType | undefined>(undefined);
+import { ToastContext } from "./toast";
 
 function ToastProvider({ children }: { children: React.ReactNode }) {
   const success = (message: string, options?: ToastOptions) => {
@@ -41,4 +38,4 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export { ToastContext, ToastProvider };
+export { ToastProvider };

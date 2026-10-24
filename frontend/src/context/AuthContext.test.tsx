@@ -2,7 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { useContext } from 'react';
 import axios from 'axios';
-import { AuthContext, AuthProvider } from './AuthContext';
+import { AuthProvider } from './AuthContext';
+import { AuthContext } from './auth';
 import api from '../lib/axios';
 import { getUserFromToken } from '../lib/jwt';
 

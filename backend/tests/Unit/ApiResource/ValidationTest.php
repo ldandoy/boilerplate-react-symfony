@@ -7,6 +7,10 @@ use App\ApiResource\ForgotPassword;
 use App\ApiResource\RegisterInput;
 use App\ApiResource\ResetPassword;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ContainerConstraintValidatorFactory;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -16,8 +20,18 @@ class ValidationTest extends TestCase
 
     protected function setUp(): void
     {
+        // UniqueEntity nécessite Doctrine : neutralisé ici, couvert par les tests fonctionnels
+        $noopValidator = new class extends ConstraintValidator {
+            public function validate(mixed $value, Constraint $constraint): void
+            {
+            }
+        };
+
         $this->validator = Validation::createValidatorBuilder()
             ->enableAttributeMapping()
+            ->setConstraintValidatorFactory(new ContainerConstraintValidatorFactory(new ServiceLocator([
+                'doctrine.orm.validator.unique' => fn () => $noopValidator,
+            ])))
             ->getValidator();
     }
 

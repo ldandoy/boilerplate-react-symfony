@@ -17,12 +17,16 @@ import api, { setAccessToken, getAccessToken } from './axios';
 // axios doesn't expose interceptor handlers publicly; reaching into the
 // internal array is the standard way to unit-test interceptor logic
 // without spinning up a real HTTP server.
+type InterceptorHandlers<F, R> = { handlers: Array<{ fulfilled: F; rejected: R }> };
+type RequestHandlers = InterceptorHandlers<(config: object) => { headers: Record<string, string> }, unknown>;
+type ResponseHandlers = InterceptorHandlers<unknown, (error: unknown) => Promise<unknown>>;
+
 function getRequestFulfilled() {
-  return (api.interceptors.request as any).handlers[0].fulfilled;
+  return (api.interceptors.request as unknown as RequestHandlers).handlers[0].fulfilled;
 }
 
 function getResponseRejected() {
-  return (api.interceptors.response as any).handlers[0].rejected;
+  return (api.interceptors.response as unknown as ResponseHandlers).handlers[0].rejected;
 }
 
 describe('axios request interceptor', () => {

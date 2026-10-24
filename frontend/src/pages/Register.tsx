@@ -4,6 +4,7 @@ import { registerSchema, type RegisterFormData } from '../schemas/signupSchema';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router';
+import { getApiErrorData, getApiErrorMessage } from '../lib/apiError';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -38,16 +39,13 @@ const Register = () => {
       setTimeout(() => {
         navigate('/login');
       }, 2000);
-    } catch (error: any) {
-      if (error.response?.data?.error) {
-        setServerError(error.response.data.error);
-      } else if (error.response?.data?.details) {
-        const details = error.response.data.details;
-        setServerError(Object.values(details).join(', '));
+    } catch (error) {
+      const data = getApiErrorData(error);
+      if (!data?.error && data?.details) {
+        setServerError(Object.values(data.details).join(', '));
       } else {
-        setServerError('Une erreur est survenue lors de l\'inscription');
+        setServerError(getApiErrorMessage(error, 'Une erreur est survenue lors de l\'inscription'));
       }
-      console.error('Erreur lors de l\'inscription:', error);
     }
   };
 

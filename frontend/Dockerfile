@@ -2,6 +2,7 @@ FROM node:24-slim AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV npm_config_store_dir="$PNPM_HOME/store"
 RUN corepack enable
 
 WORKDIR /app

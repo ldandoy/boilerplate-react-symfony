@@ -7,6 +7,8 @@ services:
     container_name: boilterplate_front
     volumes:
       - ./frontend:/app
+      # node_modules reste dans le conteneur : évite des fichiers root dans ./frontend
+      - /app/node_modules
     ports:
       - "5173:5173"
     restart: unless-stopped

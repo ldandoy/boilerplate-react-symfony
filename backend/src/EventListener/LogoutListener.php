@@ -6,9 +6,11 @@ use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Request\Extractor\ExtractorInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
-#[AsEventListener(event: LogoutEvent::class)]
+// Priorité > 64 : passe avant le DefaultLogoutListener qui redirigerait vers "/"
+#[AsEventListener(event: LogoutEvent::class, priority: 128, dispatcher: 'security.event_dispatcher.api')]
 class LogoutListener
 {
     private const COOKIE_NAME = 'refreshToken';
@@ -22,7 +24,7 @@ class LogoutListener
     public function __invoke(LogoutEvent $event): void
     {
         $request = $event->getRequest();
-        $response = $event->getResponse();
+        $response = $event->getResponse() ?? new Response(null, Response::HTTP_NO_CONTENT);
 
         // Extract refresh token from request (cookie or body)
         $refreshToken = $this->extractor->getRefreshToken($request, 'refreshToken');
@@ -36,15 +38,15 @@ class LogoutListener
         }
 
         // Clear the refresh token cookie
-        if ($response) {
-            $response->headers->setCookie(
-                Cookie::create(self::COOKIE_NAME)
-                    ->withValue('')
-                    ->withExpires(1)
-                    ->withPath('/')
-                    ->withHttpOnly(true)
-                    ->withSameSite('lax')
-            );
-        }
+        $response->headers->setCookie(
+            Cookie::create(self::COOKIE_NAME)
+                ->withValue('')
+                ->withExpires(1)
+                ->withPath('/')
+                ->withHttpOnly(true)
+                ->withSameSite('lax')
+        );
+
+        $event->setResponse($response);
     }
 }

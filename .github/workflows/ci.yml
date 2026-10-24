@@ -16,9 +16,6 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: metrostory_test
-          MYSQL_USER: app
-          MYSQL_PASSWORD: secret
         ports:
           - 3306:3306
         options: >-
@@ -26,6 +23,10 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+    env:
+      # Le suffixe "_test" est ajouté par doctrine.yaml => base app_test
+      DATABASE_URL: mysql://root:root@127.0.0.1:3306/app?serverVersion=8.0.32&charset=utf8mb4
 
     steps:
       - uses: actions/checkout@v4
@@ -40,11 +41,19 @@ jobs:
         working-directory: backend
         run: composer install --prefer-dist --no-progress --no-scripts
 
+      - name: Security audit
+        working-directory: backend
+        run: composer audit
+
+      - name: Prepare test environment
+        working-directory: backend
+        run: |
+          php bin/console lexik:jwt:generate-keypair --env=test --skip-if-exists
+          php bin/console doctrine:database:create --env=test --if-not-exists
+
       - name: Run PHPUnit
         working-directory: backend
-        env:
-          DATABASE_URL: mysql://app:secret@127.0.0.1:3306/metrostory_test
-        run: bin/phpunit --testsuite unit
+        run: bin/phpunit
 
   frontend-tests:
     name: Tests Vitest
@@ -53,15 +62,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Version de pnpm lue depuis le champ "packageManager" de package.json
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'pnpm'
           cache-dependency-path: frontend/pnpm-lock.yaml
 
@@ -69,6 +77,18 @@ jobs:
         working-directory: frontend
         run: pnpm install --frozen-lockfile
 
+      - name: Security audit
+        working-directory: frontend
+        run: pnpm audit --prod
+
+      - name: Lint
+        working-directory: frontend
+        run: pnpm lint
+
       - name: Run Vitest
         working-directory: frontend
-        run: pnpm test
+        run: pnpm test:coverage
+
+      - name: Build
+        working-directory: frontend
+        run: pnpm build
