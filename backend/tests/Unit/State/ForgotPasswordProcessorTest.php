@@ -20,7 +20,7 @@ class ForgotPasswordProcessorTest extends TestCase
         ResetPasswordHelperInterface $resetPasswordHelper,
         MailerInterface $mailer
     ): ForgotPasswordProcessor {
-        return new ForgotPasswordProcessor($entityManager, $resetPasswordHelper, $mailer, 'http://localhost:3000');
+        return new ForgotPasswordProcessor($entityManager, $resetPasswordHelper, $mailer, 'http://localhost:5173');
     }
 
     public function testUnknownEmailReturnsGenericMessageWithoutSendingMail(): void
