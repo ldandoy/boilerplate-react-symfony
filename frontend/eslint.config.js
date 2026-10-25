@@ -25,5 +25,42 @@ export default defineConfig([
       '@typescript-eslint/no-explicit-any': 'error',
     },
   },
+  {
+    // Les appels HTTP passent par l'instance api de src/lib/axios.ts (Bearer + refresh JWT)
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/**/*.test.{ts,tsx}', 'src/test/**'],
+    rules: {
+      'no-restricted-globals': [
+        'error',
+        { name: 'fetch', message: "Utiliser l'instance api de src/lib/axios.ts." },
+      ],
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'axios',
+              message:
+                "Utiliser l'instance api de src/lib/axios.ts. axios brut est réservé aux appels publics : ajouter le fichier à la liste blanche de eslint.config.js.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // Appels publics (login, inscription, mot de passe…) : axios brut pour ne pas déclencher le refresh
+    files: [
+      'src/lib/axios.ts',
+      'src/context/AuthContext.tsx',
+      'src/pages/Register.tsx',
+      'src/pages/ForgotPassword.tsx',
+      'src/pages/ResetPassword.tsx',
+      'src/pages/VerifyEmail.tsx',
+    ],
+    rules: {
+      'no-restricted-imports': 'off',
+    },
+  },
   eslintConfigPrettier,
 ]);

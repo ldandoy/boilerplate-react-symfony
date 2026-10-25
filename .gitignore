@@ -1,3 +1,5 @@
 /mysql
 .env
-/.claude
+
+# Config Claude Code : partagée sauf les réglages perso
+/.claude/settings.local.json

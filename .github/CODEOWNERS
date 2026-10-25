@@ -1,0 +1,10 @@
+# Fichiers qui définissent ou vérifient les règles du projet :
+# toute modification doit être relue par le mainteneur (avec la protection de branche activée).
+/AGENTS.md                                @ldandoy
+/CLAUDE.md                                @ldandoy
+/.claude/                                 @ldandoy
+/.github/                                 @ldandoy
+/backend/config/packages/security.yaml    @ldandoy
+/backend/phpunit.dist.xml                 @ldandoy
+/backend/tests/Architecture/              @ldandoy
+/frontend/eslint.config.js                @ldandoy

@@ -52,6 +52,7 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            user_checker: App\Security\AdminUserChecker
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -77,12 +78,15 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        - { path: ^/$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
-        - { path: ^/api/register, roles: PUBLIC_ACCESS } # Allow registration
-        - { path: ^/api/login, roles: PUBLIC_ACCESS } # Allow login
-        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS } # Allow token refresh
+        # Doc API publique : Swagger UI (/api), spec OpenAPI (/api/docs.*) et contextes JSON-LD
+        - { path: ^/api/?$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/(index|docs|contexts)\b, roles: PUBLIC_ACCESS }
+        # Routes d'authentification publiques
+        - { path: ^/api/(login_check|token/refresh|register|verify-email|forgot-password|reset-password)$, roles: PUBLIC_ACCESS }
+        # Tout le reste de l'API exige un JWT valide (les nouvelles ressources sont protégées par défaut)
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:
