@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(grep *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git branch)",
+      "Bash(docker compose ps)",
+      "Bash(docker compose logs *)",
+      "Bash(docker exec boilterplate_back php bin/console debug:router)",
+      "Bash(docker exec boilterplate_back php bin/console debug:router *)",
+      "Bash(docker exec boilterplate_back bin/phpunit)",
+      "Bash(docker exec boilterplate_back bin/phpunit --testsuite *)",
+      "Bash(docker exec boilterplate_back bin/phpunit --filter *)",
+      "Bash(docker exec boilterplate_back bin/phpunit tests/*)",
+      "Bash(docker exec boilterplate_front pnpm lint)",
+      "Bash(docker exec boilterplate_front pnpm test)",
+      "Bash(docker exec boilterplate_front pnpm test *)",
+      "Bash(docker exec boilterplate_front pnpm build)",
+      "mcp__claude_ai_Context7__query-docs",
+      "mcp__claude_ai_Context7__resolve-library-id"
+    ],
+    "ask": [
+      "Bash(rm *)",
+      "Bash(git push *)",
+      "Bash(git commit *)",
+      "Bash(docker exec boilterplate_back php bin/console doctrine:*)",
+      "Edit(/backend/config/packages/security.yaml)",
+      "Edit(/.github/**)"
+    ],
+    "deny": [
+      "Read(**/.env.local)",
+      "Read(**/.env.*.local)",
+      "Read(**/config/jwt/**)",
+      "Read(**/config/secrets/**)",
+      "Bash(*config/jwt*)",
+      "Bash(*config/secrets*)",
+      "Bash(*.env.local*)",
+      "Bash(* debug:dotenv*)",
+      "Bash(* debug:container *--env-vars*)",
+      "Bash(git push --force*)",
+      "Bash(git push * --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * -f*)",
+      "Bash(git push * +*)",
+      "Bash(git reset --hard*)",
+      "Bash(docker compose down -v*)"
+    ]
+  }
+}
