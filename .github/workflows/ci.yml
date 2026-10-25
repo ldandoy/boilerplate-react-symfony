@@ -50,6 +50,8 @@ jobs:
         run: |
           php bin/console lexik:jwt:generate-keypair --env=test --skip-if-exists
           php bin/console doctrine:database:create --env=test --if-not-exists
+          # assets/vendor est ignoré par Git : sans lui, importmap() fait planter les pages Twig (/login)
+          php bin/console importmap:install
 
       # Échoue si une entité a été modifiée sans migration correspondante
       - name: Check migrations match entities
