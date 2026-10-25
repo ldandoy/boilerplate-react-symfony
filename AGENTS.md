@@ -89,7 +89,7 @@ Pour rattacher automatiquement une ressource à l'utilisateur connecté : Proces
 ## Frontend
 
 - Appels **authentifiés** : toujours l'instance `api` de `src/lib/axios.ts` (`api.get('/projects')`). Elle ajoute le header `Bearer` et rafraîchit le JWT automatiquement sur un 401. Les chemins sont relatifs à `VITE_API_URL` (qui inclut déjà `/api`).
-- Appels **publics** (login, register, mot de passe oublié…) : `axios` brut avec `${import.meta.env.VITE_API_URL}/...`, pour ne pas déclencher le refresh.
+- Appels **publics** (login, register, mot de passe oublié…) : `axios` brut avec `${import.meta.env.VITE_API_URL}/...`, pour ne pas déclencher le refresh. ESLint interdit `axios` brut et `fetch` ailleurs : une nouvelle page publique s'ajoute à la liste blanche de `eslint.config.js`.
 - `PATCH` : envoyer `Content-Type: application/merge-patch+json`.
 - Avec les headers par défaut d'axios, API Platform répond en JSON simple (pas JSON-LD) : une collection est un tableau.
 - Erreurs : `getApiErrorMessage(error, 'message par défaut')` de `src/lib/apiError.ts` (gère le format problem+json d'API Platform).
@@ -112,7 +112,7 @@ docker exec -it boilterplate_front sh
 | Backend (`back`) | Frontend (`front`) |
 | --- | --- |
 | `bin/phpunit` (toute la suite, base `app_test`) | `pnpm test` |
-| `bin/phpunit --testsuite unit` / `--testsuite functional` | `pnpm test:coverage` |
+| `bin/phpunit --testsuite unit` / `functional` / `architecture` | `pnpm test:coverage` |
 | `php bin/console debug:router` | `pnpm lint` |
 | `php bin/console make:migration` | `pnpm build` (vérifie aussi les types) |
 | `php bin/console app:create-user email mdp --admin --verified` | |
@@ -127,6 +127,13 @@ URLs locales : front http://localhost:5173, API + Swagger http://localhost:8001/
 - `pnpm lint && pnpm test && pnpm build` passent dans le conteneur `front`.
 - Toute nouvelle route API a son test fonctionnel, tout nouveau Processor/Provider/Service a son test unitaire (`tests/Unit/State`, `tests/Unit/Service`).
 - La CI (`.github/workflows/ci.yml`) rejoue tout ça sur `main` / `develop` : ne pas la casser.
+
+Les règles d'or sont vérifiées automatiquement, ne pas les contourner :
+
+- `tests/Architecture/` (PHPUnit) : pas de JSON à la main, pas de contrôleur hors `Admin/` (sauf `HomeController` / `SecurityController`), routes `/api` uniquement via API Platform, `operations` explicites, CrudController pour chaque entité exposée, `password` jamais en `:read`, test unitaire pour chaque Processor / Provider / Service.
+- CI : `doctrine:schema:validate` échoue si une entité a changé sans migration.
+- `.claude/hooks/guard.sh` : refuse ces écarts dès l'écriture du fichier dans Claude Code.
+- Si une règle bloque un besoin légitime, le signaler au mainteneur plutôt que de modifier le test, le hook ou la config ESLint.
 
 ## Si l'utilisateur n'est pas développeur
 

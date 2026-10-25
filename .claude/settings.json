@@ -26,15 +26,8 @@
       "Bash(docker exec boilterplate_front pnpm test *)",
       "Bash(docker exec boilterplate_front pnpm build)",
       "mcp__claude_ai_Context7__query-docs",
-      "mcp__claude_ai_Context7__resolve-library-id"
-    ],
-    "ask": [
-      "Bash(rm *)",
-      "Bash(git push *)",
-      "Bash(git commit *)",
-      "Bash(docker exec boilterplate_back php bin/console doctrine:*)",
-      "Edit(/backend/config/packages/security.yaml)",
-      "Edit(/.github/**)"
+      "mcp__claude_ai_Context7__resolve-library-id",
+      "Bash(pnpm lint *)"
     ],
     "deny": [
       "Read(**/.env.local)",
@@ -53,6 +46,14 @@
       "Bash(git push * +*)",
       "Bash(git reset --hard*)",
       "Bash(docker compose down -v*)"
+    ],
+    "ask": [
+      "Bash(rm *)",
+      "Bash(git push *)",
+      "Bash(git commit *)",
+      "Bash(docker exec boilterplate_back php bin/console doctrine:*)",
+      "Edit(/backend/config/packages/security.yaml)",
+      "Edit(/.github/**)"
     ]
   },
   "hooks": {
